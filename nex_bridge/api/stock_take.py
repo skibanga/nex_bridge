@@ -2,14 +2,14 @@ import frappe
 
 
 @frappe.whitelist()
-def get_user_warehouses_and_companies():
+def get_warehouses_grouped_by_company():
     # Ensure the user is authenticated
     user_email = frappe.session.user
     if not user_email or user_email == "Guest":
         frappe.response["message"] = "User must be logged in to access this resource."
         return
 
-    warehouses = frappe.db.get_list("Warehouse", fields=["name"], limit=1000)
+    warehouses = frappe.db.get_list("Warehouse", fields=["name", "company"], limit=1000)
 
     if not warehouses:
         frappe.response["message"] = "No warehouses found."
@@ -21,11 +21,15 @@ def get_user_warehouses_and_companies():
         frappe.response["message"] = "No companies found."
         return
 
-    warehouse_names = [wh.get("name") for wh in warehouses]
-    company_names = [comp.get("name") for comp in companies]
+    company_warehouse_map = {}
+    for wh in warehouses:
+        company = wh.get("company")
+        warehouse_name = wh.get("name")
+        if company not in company_warehouse_map:
+            company_warehouse_map[company] = []
+        company_warehouse_map[company].append(warehouse_name)
 
     frappe.response["message"] = {
-        "warehouses": warehouse_names,
-        "companies": company_names,
-        "user_id": user_email,
+        "warehouses_by_company": company_warehouse_map,
+        "companies": [comp.get("name") for comp in companies],
     }
