@@ -107,8 +107,7 @@
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Items",
-   "options": "Stock Take Entry Item",
-   "reqd": 1
+   "options": "Stock Take Entry Item"
   },
   {
    "fieldname": "section_break_9",
@@ -133,7 +132,7 @@
  "icon": "fa fa-upload-alt",
  "is_submittable": 1,
  "links": [],
- "modified": "2025-01-24 12:00:10.013884",
+ "modified": "2025-01-29 12:11:21.411632",
  "modified_by": "Administrator",
  "module": "Stock Take",
  "name": "Stock Take Entry",
